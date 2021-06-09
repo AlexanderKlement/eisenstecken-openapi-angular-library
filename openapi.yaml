@@ -1,0 +1,3443 @@
+openapi: 3.0.2
+info:
+  title: FastAPI
+  version: 0.1.0
+paths:
+  /users/:
+    get:
+      summary: Read Users
+      operationId: read_users_users__get
+      parameters:
+        - required: false
+          schema:
+            title: Skip
+            type: integer
+            default: 0
+          name: skip
+          in: query
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+            default: 100
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Read Users Users  Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      summary: Create User
+      operationId: create_user_users__post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /users/me:
+    get:
+      summary: Read Users Me
+      operationId: read_users_me_users_me_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+    put:
+      summary: Update User Me
+      operationId: update_user_me_users_me_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+  '/users/{user_id}':
+    get:
+      summary: Read User
+      operationId: read_user_users__user_id__get
+      parameters:
+        - required: true
+          schema:
+            title: User Id
+            type: integer
+          name: user_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'users:all'
+    put:
+      summary: Update User
+      operationId: update_user_users__user_id__put
+      parameters:
+        - required: true
+          schema:
+            title: User Id
+            type: integer
+          name: user_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'users:modify'
+    delete:
+      summary: Delete User
+      operationId: delete_user_users__user_id__delete
+      parameters:
+        - required: true
+          schema:
+            title: User Id
+            type: integer
+          name: user_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Delete User Users  User Id  Delete
+                type: boolean
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'users:delete'
+  '/users/rights/{user_id}':
+    post:
+      summary: Grant Rights To User
+      operationId: grant_rights_to_user_users_rights__user_id__post
+      parameters:
+        - required: true
+          schema:
+            title: User Id
+            type: integer
+          name: user_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: Rights
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'right:grant'
+  /token:
+    post:
+      summary: Login For Access Token
+      operationId: login_for_access_token_token_post
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Body_login_for_access_token_token_post'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /rights/:
+    get:
+      summary: Get Rights
+      operationId: get_rights_rights__get
+      parameters:
+        - required: false
+          schema:
+            title: Skip
+            type: integer
+            default: 0
+          name: skip
+          in: query
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+            default: 100
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get Rights Rights  Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/Right'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /chats/:
+    get:
+      summary: Read Chat Messages
+      operationId: read_chat_messages_chats__get
+      parameters:
+        - required: false
+          schema:
+            title: Skip
+            type: integer
+            default: 0
+          name: skip
+          in: query
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+            default: 100
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Read Chat Messages Chats  Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChatMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  '/chats/{user_id}':
+    post:
+      summary: Create Chat Message
+      operationId: create_chat_message_chats__user_id__post
+      parameters:
+        - required: true
+          schema:
+            title: User Id
+            type: integer
+          name: user_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatMessageCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+  /calendar/:
+    get:
+      summary: Read Calendar Entries
+      operationId: read_calendar_entries_calendar__get
+      parameters:
+        - required: false
+          schema:
+            title: Skip
+            type: integer
+            default: 0
+          name: skip
+          in: query
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+            default: 100
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Read Calendar Entries Calendar  Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/Calendar'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'calendar:all'
+    post:
+      summary: Create Calendar Entry
+      operationId: create_calendar_entry_calendar__post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CalendarCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Calendar'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'calendar:create'
+  '/calendar/{calendar_id}':
+    put:
+      summary: Delete Calendar Entry
+      operationId: delete_calendar_entry_calendar__calendar_id__put
+      parameters:
+        - required: true
+          schema:
+            title: Calendar Id
+            type: integer
+          name: calendar_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Calendar'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'calendar:delete'
+  /unit/:
+    get:
+      summary: Read Units
+      operationId: read_units_unit__get
+      parameters:
+        - required: false
+          schema:
+            title: Skip
+            type: integer
+            default: 0
+          name: skip
+          in: query
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+            default: 100
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Read Units Unit  Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/Unit'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      summary: Create Unit
+      operationId: create_unit_unit__post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnitCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unit'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'unit:create'
+  '/unit/{unit_id}':
+    put:
+      summary: Update Unit
+      operationId: update_unit_unit__unit_id__put
+      parameters:
+        - required: true
+          schema:
+            title: Unit Id
+            type: integer
+          name: unit_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnitCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unit'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'unit:modify'
+  '/unit/unit_id}':
+    delete:
+      summary: Delete Unit
+      operationId: delete_unit_unit_unit_id__delete
+      parameters:
+        - required: true
+          schema:
+            title: Unit Id
+            type: integer
+          name: unit_id
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unit'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'unit:delete'
+  /vat/:
+    get:
+      summary: Read Vats
+      operationId: read_vats_vat__get
+      parameters:
+        - required: false
+          schema:
+            title: Skip
+            type: integer
+            default: 0
+          name: skip
+          in: query
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+            default: 100
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Read Vats Vat  Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vat'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      summary: Create Vat
+      operationId: create_vat_vat__post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VatCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vat'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'vat:create'
+  '/vat/{vat_id}':
+    put:
+      summary: Update Vat
+      operationId: update_vat_vat__vat_id__put
+      parameters:
+        - required: true
+          schema:
+            title: Vat Id
+            type: integer
+          name: vat_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VatCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vat'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'vat:modify'
+    delete:
+      summary: Delete Vat
+      operationId: delete_vat_vat__vat_id__delete
+      parameters:
+        - required: true
+          schema:
+            title: Vat Id
+            type: integer
+          name: vat_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Delete Vat Vat  Vat Id  Delete
+                type: boolean
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'vat:delete'
+  /category/:
+    get:
+      summary: Read Categories
+      operationId: read_categories_category__get
+      parameters:
+        - required: false
+          schema:
+            title: Skip
+            type: integer
+            default: 0
+          name: skip
+          in: query
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+            default: 100
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Read Categories Category  Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      summary: Create Category
+      operationId: create_category_category__post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'categories:create'
+  '/category/{category_id}':
+    put:
+      summary: Update Category
+      operationId: update_category_category__category_id__put
+      parameters:
+        - required: true
+          schema:
+            title: Category Id
+            type: integer
+          name: category_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'categories:modify'
+    delete:
+      summary: Delete Category
+      operationId: delete_category_category__category_id__delete
+      parameters:
+        - required: true
+          schema:
+            title: Category Id
+            type: integer
+          name: category_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Delete Category Category  Category Id  Delete
+                type: boolean
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'categories:delete'
+  /article/:
+    get:
+      summary: Read Articles
+      operationId: read_articles_article__get
+      parameters:
+        - required: false
+          schema:
+            title: Skip
+            type: integer
+            default: 0
+          name: skip
+          in: query
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+            default: 100
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Read Articles Article  Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/Article'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'articles:all'
+    post:
+      summary: Create Article
+      operationId: create_article_article__post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArticleCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'articles:create'
+  '/article/{article_id}':
+    put:
+      summary: Update Article
+      operationId: update_article_article__article_id__put
+      parameters:
+        - required: true
+          schema:
+            title: Article Id
+            type: integer
+          name: article_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArticleCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'articles:modify'
+    delete:
+      summary: Delete Article
+      operationId: delete_article_article__article_id__delete
+      parameters:
+        - required: true
+          schema:
+            title: Article Id
+            type: integer
+          name: article_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Delete Article Article  Article Id  Delete
+                type: boolean
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'articles:delete'
+  /ingoing_invoice/:
+    get:
+      summary: Read Ingoing Invoices
+      operationId: read_ingoing_invoices_ingoing_invoice__get
+      parameters:
+        - required: false
+          schema:
+            title: Skip
+            type: integer
+            default: 0
+          name: skip
+          in: query
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+            default: 100
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Read Ingoing Invoices Ingoing Invoice  Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/IngoingInvoice'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'ingoing_invoices:all'
+    post:
+      summary: Create Ingoing Invoice
+      operationId: create_ingoing_invoice_ingoing_invoice__post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngoingInvoiceCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IngoingInvoice'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'ingoing_invoices:create'
+  '/ingoing_invoice/{ingoing_invoice_id}':
+    put:
+      summary: Update Ingoing Invoice
+      operationId: update_ingoing_invoice_ingoing_invoice__ingoing_invoice_id__put
+      parameters:
+        - required: true
+          schema:
+            title: Ingoing Invoice Id
+            type: integer
+          name: ingoing_invoice_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngoingInvoiceCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IngoingInvoice'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'ingoing_invoices:modify'
+    delete:
+      summary: Delete Ingoing Invoice
+      operationId: delete_ingoing_invoice_ingoing_invoice__ingoing_invoice_id__delete
+      parameters:
+        - required: true
+          schema:
+            title: Ingoing Invoice Id
+            type: integer
+          name: ingoing_invoice_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Delete Ingoing Invoice Ingoing Invoice  Ingoing Invoice Id  Delete
+                type: boolean
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'ingoing_invoices:delete'
+  /supplier/:
+    get:
+      summary: Read Suppliers
+      operationId: read_suppliers_supplier__get
+      parameters:
+        - required: false
+          schema:
+            title: Skip
+            type: integer
+            default: 0
+          name: skip
+          in: query
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+            default: 100
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Read Suppliers Supplier  Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/Supplier'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'supplier:all'
+    post:
+      summary: Create Supplier
+      operationId: create_supplier_supplier__post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupplierCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Supplier'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'supplier:create'
+  '/supplier/{supplier_id}':
+    put:
+      summary: Update Supplier
+      operationId: update_supplier_supplier__supplier_id__put
+      parameters:
+        - required: true
+          schema:
+            title: Supplier Id
+            type: integer
+          name: supplier_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupplierCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Supplier'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'supplier:modify'
+    delete:
+      summary: Delete Supplier
+      operationId: delete_supplier_supplier__supplier_id__delete
+      parameters:
+        - required: true
+          schema:
+            title: Supplier Id
+            type: integer
+          name: supplier_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Delete Supplier Supplier  Supplier Id  Delete
+                type: boolean
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'supplier:delete'
+  /stock/:
+    get:
+      summary: Read Stocks
+      operationId: read_stocks_stock__get
+      parameters:
+        - required: false
+          schema:
+            title: Skip
+            type: integer
+            default: 0
+          name: skip
+          in: query
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+            default: 100
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Read Stocks Stock  Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/Stock'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'stock:all'
+    post:
+      summary: Create Stock
+      operationId: create_stock_stock__post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StockCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stock'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'stock:create'
+  '/stock/{stock_id}':
+    put:
+      summary: Update Stock
+      operationId: update_stock_stock__stock_id__put
+      parameters:
+        - required: true
+          schema:
+            title: Stock Id
+            type: integer
+          name: stock_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StockCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stock'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'stock:modify'
+    delete:
+      summary: Delete Stock
+      operationId: delete_stock_stock__stock_id__delete
+      parameters:
+        - required: true
+          schema:
+            title: Stock Id
+            type: integer
+          name: stock_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Delete Stock Stock  Stock Id  Delete
+                type: boolean
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'stock:delete'
+  /job/:
+    get:
+      summary: Read Jobs
+      operationId: read_jobs_job__get
+      parameters:
+        - required: false
+          schema:
+            title: Skip
+            type: integer
+            default: 0
+          name: skip
+          in: query
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+            default: 100
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Read Jobs Job  Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/Job'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'jobs:all'
+    post:
+      summary: Create Job
+      operationId: create_job_job__post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'jobs:create'
+  '/job/{job_id}':
+    put:
+      summary: Update Job
+      operationId: update_job_job__job_id__put
+      parameters:
+        - required: true
+          schema:
+            title: Job Id
+            type: integer
+          name: job_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobUpdate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'jobs:modify'
+  '/job{job_id}':
+    delete:
+      summary: Delete Job
+      operationId: delete_job_job_job_id__delete
+      parameters:
+        - required: true
+          schema:
+            title: Job Id
+            type: integer
+          name: job_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Delete Job Job Job Id  Delete
+                type: boolean
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'jobs:delete'
+  '/job/status/{job_id}':
+    post:
+      summary: Update Job Status
+      operationId: update_job_status_job_status__job_id__post
+      parameters:
+        - required: true
+          schema:
+            title: Job Id
+            type: integer
+          name: job_id
+          in: path
+        - required: true
+          schema:
+            $ref: '#/components/schemas/JobStatusType'
+          name: job_status
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'jobs:modify'
+  '/job/path/{job_id}':
+    post:
+      summary: Update Job Path
+      operationId: update_job_path_job_path__job_id__post
+      parameters:
+        - required: true
+          schema:
+            title: Job Id
+            type: integer
+          name: job_id
+          in: path
+        - required: true
+          schema:
+            title: Job Path
+            type: string
+          name: job_path
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'jobs:modify'
+  /order/:
+    get:
+      summary: Read Orders
+      operationId: read_orders_order__get
+      parameters:
+        - required: false
+          schema:
+            title: Skip
+            type: integer
+            default: 0
+          name: skip
+          in: query
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+            default: 100
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Read Orders Order  Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'order:all'
+    post:
+      summary: Create Order
+      operationId: create_order_order__post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'order:create'
+  '/order/{order_id}':
+    put:
+      summary: Update Order
+      operationId: update_order_order__order_id__put
+      parameters:
+        - required: true
+          schema:
+            title: Order Id
+            type: integer
+          name: order_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderUpdate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'order:modify'
+    delete:
+      summary: Delete Order
+      operationId: delete_order_order__order_id__delete
+      parameters:
+        - required: true
+          schema:
+            title: Order Id
+            type: integer
+          name: order_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Delete Order Order  Order Id  Delete
+                type: boolean
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'order:delete'
+  /client/:
+    get:
+      summary: Read Clients
+      operationId: read_clients_client__get
+      parameters:
+        - required: false
+          schema:
+            title: Skip
+            type: integer
+            default: 0
+          name: skip
+          in: query
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+            default: 100
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Read Clients Client  Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/Client'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'clients:all'
+    post:
+      summary: Create Client
+      operationId: create_client_client__post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'clients:create'
+  '/client/{client_id}':
+    put:
+      summary: Update Client
+      operationId: update_client_client__client_id__put
+      parameters:
+        - required: true
+          schema:
+            title: Client Id
+            type: integer
+          name: client_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'clients:modify'
+    delete:
+      summary: Delete Client
+      operationId: delete_client_client__client_id__delete
+      parameters:
+        - required: true
+          schema:
+            title: Client Id
+            type: integer
+          name: client_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'clients:delete'
+  /offer/:
+    get:
+      summary: Read Offers
+      operationId: read_offers_offer__get
+      parameters:
+        - required: false
+          schema:
+            title: Skip
+            type: integer
+            default: 0
+          name: skip
+          in: query
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+            default: 100
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Read Offers Offer  Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/Offer'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'offers:all'
+    post:
+      summary: Create Offer
+      operationId: create_offer_offer__post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OfferCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Offer'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'offers:create'
+  '/offer/{offer_id}':
+    put:
+      summary: Update Offer
+      operationId: update_offer_offer__offer_id__put
+      parameters:
+        - required: true
+          schema:
+            title: Offer Id
+            type: integer
+          name: offer_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OfferUpdate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Offer'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'offers:modify'
+    delete:
+      summary: Delete Offer
+      operationId: delete_offer_offer__offer_id__delete
+      parameters:
+        - required: true
+          schema:
+            title: Offer Id
+            type: integer
+          name: offer_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Delete Offer Offer  Offer Id  Delete
+                type: boolean
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+            - 'offers:delete'
+  /note/:
+    get:
+      summary: Read Note Entries
+      operationId: read_note_entries_note__get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Read Note Entries Note  Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/Note'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+    post:
+      summary: Create Note Entry
+      operationId: create_note_entry_note__post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoteCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+  '/note/{note_id}':
+    put:
+      summary: Update Note Entry
+      operationId: update_note_entry_note__note_id__put
+      parameters:
+        - required: true
+          schema:
+            title: Note Id
+            type: integer
+          name: note_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoteCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+    delete:
+      summary: Delete Note Entry
+      operationId: delete_note_entry_note__note_id__delete
+      parameters:
+        - required: true
+          schema:
+            title: Note Id
+            type: integer
+          name: note_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Delete Note Entry Note  Note Id  Delete
+                type: boolean
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer:
+            - 'users:me'
+  /:
+    get:
+      summary: Root
+      operationId: root__get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+components:
+  schemas:
+    Address:
+      title: Address
+      required:
+        - name
+        - street_number
+        - city
+        - cap
+        - id
+        - country
+      type: object
+      properties:
+        name:
+          title: Name
+          type: string
+        street_number:
+          title: Street Number
+          type: string
+        city:
+          title: City
+          type: string
+        cap:
+          title: Cap
+          type: string
+        id:
+          title: Id
+          type: integer
+        country:
+          $ref: '#/components/schemas/Country'
+    AddressCreate:
+      title: AddressCreate
+      required:
+        - name
+        - street_number
+        - city
+        - cap
+        - country_code
+      type: object
+      properties:
+        name:
+          title: Name
+          type: string
+        street_number:
+          title: Street Number
+          type: string
+        city:
+          title: City
+          type: string
+        cap:
+          title: Cap
+          type: string
+        country_code:
+          title: Country Code
+          type: string
+    Article:
+      title: Article
+      required:
+        - mod_number
+        - price
+        - id
+        - lock
+        - unit
+        - name
+        - description
+        - categories
+        - vat
+        - deleted
+      type: object
+      properties:
+        mod_number:
+          title: Mod Number
+          type: string
+        price:
+          title: Price
+          type: number
+        id:
+          title: Id
+          type: integer
+        lock:
+          $ref: '#/components/schemas/Lock'
+        unit:
+          $ref: '#/components/schemas/Unit'
+        name:
+          $ref: '#/components/schemas/Text'
+        description:
+          $ref: '#/components/schemas/Text'
+        categories:
+          title: Categories
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        vat:
+          $ref: '#/components/schemas/Vat'
+        deleted:
+          title: Deleted
+          type: boolean
+    ArticleCreate:
+      title: ArticleCreate
+      required:
+        - mod_number
+        - price
+        - unit_id
+        - name_de
+        - name_it
+        - description_de
+        - description_it
+        - category_ids
+        - vat_id
+      type: object
+      properties:
+        mod_number:
+          title: Mod Number
+          type: string
+        price:
+          title: Price
+          type: number
+        unit_id:
+          title: Unit Id
+          type: integer
+        name_de:
+          title: Name De
+          type: string
+        name_it:
+          title: Name It
+          type: string
+        description_de:
+          title: Description De
+          type: string
+        description_it:
+          title: Description It
+          type: string
+        category_ids:
+          title: Category Ids
+          type: array
+          items:
+            type: integer
+        vat_id:
+          title: Vat Id
+          type: integer
+    Body_login_for_access_token_token_post:
+      title: Body_login_for_access_token_token_post
+      required:
+        - username
+        - password
+      type: object
+      properties:
+        grant_type:
+          title: Grant Type
+          pattern: password
+          type: string
+        username:
+          title: Username
+          type: string
+        password:
+          title: Password
+          type: string
+        scope:
+          title: Scope
+          type: string
+          default: ''
+        client_id:
+          title: Client Id
+          type: string
+        client_secret:
+          title: Client Secret
+          type: string
+    Calendar:
+      title: Calendar
+      required:
+        - title
+        - description
+        - start_time
+        - end_time
+        - id
+        - timestamp
+        - user
+        - lock
+      type: object
+      properties:
+        title:
+          title: Title
+          type: string
+        description:
+          title: Description
+          type: string
+        start_time:
+          title: Start Time
+          type: string
+          format: date-time
+        end_time:
+          title: End Time
+          type: string
+          format: date-time
+        id:
+          title: Id
+          type: integer
+        timestamp:
+          title: Timestamp
+          type: string
+          format: date-time
+        user:
+          $ref: '#/components/schemas/User'
+        lock:
+          $ref: '#/components/schemas/Lock'
+    CalendarCreate:
+      title: CalendarCreate
+      required:
+        - title
+        - description
+        - start_time
+        - end_time
+      type: object
+      properties:
+        title:
+          title: Title
+          type: string
+        description:
+          title: Description
+          type: string
+        start_time:
+          title: Start Time
+          type: string
+          format: date-time
+        end_time:
+          title: End Time
+          type: string
+          format: date-time
+    Category:
+      title: Category
+      required:
+        - name
+        - id
+      type: object
+      properties:
+        name:
+          title: Name
+          type: string
+        id:
+          title: Id
+          type: integer
+    CategoryCreate:
+      title: CategoryCreate
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          title: Name
+          type: string
+    ChatMessage:
+      title: ChatMessage
+      required:
+        - text
+        - id
+        - timestamp
+        - sender
+      type: object
+      properties:
+        text:
+          title: Text
+          type: string
+        id:
+          title: Id
+          type: integer
+        timestamp:
+          title: Timestamp
+          type: string
+          format: date-time
+        sender:
+          $ref: '#/components/schemas/User'
+        recipient:
+          $ref: '#/components/schemas/User'
+    ChatMessageCreate:
+      title: ChatMessageCreate
+      required:
+        - text
+      type: object
+      properties:
+        text:
+          title: Text
+          type: string
+    Client:
+      title: Client
+      required:
+        - name
+        - lastname
+        - isCompany
+        - mail1
+        - mail2
+        - tel1
+        - tel2
+        - vat_number
+        - fiscal_code
+        - codice_destinatario
+        - pec
+        - esigibilita_iva
+        - publica_amministrazione
+        - cup
+        - cig
+        - id
+        - lock
+        - gender
+      type: object
+      properties:
+        name:
+          title: Name
+          type: string
+        lastname:
+          title: Lastname
+          type: string
+        isCompany:
+          title: Iscompany
+          type: boolean
+        mail1:
+          title: Mail1
+          type: string
+        mail2:
+          title: Mail2
+          type: string
+        tel1:
+          title: Tel1
+          type: string
+        tel2:
+          title: Tel2
+          type: string
+        vat_number:
+          title: Vat Number
+          type: string
+        fiscal_code:
+          title: Fiscal Code
+          type: string
+        codice_destinatario:
+          title: Codice Destinatario
+          type: string
+        pec:
+          title: Pec
+          type: string
+        esigibilita_iva:
+          title: Esigibilita Iva
+          type: string
+        publica_amministrazione:
+          title: Publica Amministrazione
+          type: boolean
+        cup:
+          title: Cup
+          type: string
+        cig:
+          title: Cig
+          type: string
+        id:
+          title: Id
+          type: integer
+        lock:
+          $ref: '#/components/schemas/Lock'
+        gender:
+          $ref: '#/components/schemas/Gender'
+    ClientCreate:
+      title: ClientCreate
+      required:
+        - name
+        - lastname
+        - isCompany
+        - mail1
+        - mail2
+        - tel1
+        - tel2
+        - vat_number
+        - fiscal_code
+        - codice_destinatario
+        - pec
+        - esigibilita_iva
+        - publica_amministrazione
+        - cup
+        - cig
+        - gender_code
+      type: object
+      properties:
+        name:
+          title: Name
+          type: string
+        lastname:
+          title: Lastname
+          type: string
+        isCompany:
+          title: Iscompany
+          type: boolean
+        mail1:
+          title: Mail1
+          type: string
+        mail2:
+          title: Mail2
+          type: string
+        tel1:
+          title: Tel1
+          type: string
+        tel2:
+          title: Tel2
+          type: string
+        vat_number:
+          title: Vat Number
+          type: string
+        fiscal_code:
+          title: Fiscal Code
+          type: string
+        codice_destinatario:
+          title: Codice Destinatario
+          type: string
+        pec:
+          title: Pec
+          type: string
+        esigibilita_iva:
+          title: Esigibilita Iva
+          type: string
+        publica_amministrazione:
+          title: Publica Amministrazione
+          type: boolean
+        cup:
+          title: Cup
+          type: string
+        cig:
+          title: Cig
+          type: string
+        gender_code:
+          title: Gender Code
+          type: string
+    Country:
+      title: Country
+      required:
+        - code
+        - name
+        - id
+      type: object
+      properties:
+        code:
+          title: Code
+          type: string
+        name:
+          title: Name
+          type: string
+        id:
+          title: Id
+          type: integer
+    Gender:
+      title: Gender
+      required:
+        - code
+        - id
+        - name
+        - salutation
+      type: object
+      properties:
+        code:
+          title: Code
+          type: string
+        id:
+          title: Id
+          type: integer
+        name:
+          $ref: '#/components/schemas/Text'
+        salutation:
+          $ref: '#/components/schemas/Text'
+    HTTPValidationError:
+      title: HTTPValidationError
+      type: object
+      properties:
+        detail:
+          title: Detail
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+    IngoingInvoice:
+      title: IngoingInvoice
+      required:
+        - number
+        - name
+        - date
+        - id
+        - timestamp
+        - lock
+        - articles
+      type: object
+      properties:
+        number:
+          title: Number
+          type: string
+        name:
+          title: Name
+          type: string
+        date:
+          title: Date
+          type: string
+          format: date
+        id:
+          title: Id
+          type: integer
+        timestamp:
+          title: Timestamp
+          type: string
+          format: date-time
+        payment:
+          $ref: '#/components/schemas/Payment'
+        lock:
+          $ref: '#/components/schemas/Lock'
+        articles:
+          title: Articles
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderedArticle'
+    IngoingInvoiceCreate:
+      title: IngoingInvoiceCreate
+      required:
+        - number
+        - name
+        - date
+        - articles
+      type: object
+      properties:
+        number:
+          title: Number
+          type: string
+        name:
+          title: Name
+          type: string
+        date:
+          title: Date
+          type: string
+          format: date
+        articles:
+          title: Articles
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderedArticleCreate'
+    Job:
+      title: Job
+      required:
+        - description
+        - id
+        - lock
+        - orderable
+        - timestamp
+        - year
+        - code
+        - client
+        - address
+        - archive
+        - status
+        - type
+        - path
+      type: object
+      properties:
+        description:
+          title: Description
+          type: string
+        id:
+          title: Id
+          type: integer
+        lock:
+          $ref: '#/components/schemas/Lock'
+        orderable:
+          $ref: '#/components/schemas/Orderable'
+        timestamp:
+          title: Timestamp
+          type: string
+          format: date-time
+        year:
+          title: Year
+          type: integer
+        code:
+          title: Code
+          type: string
+        offers:
+          title: Offers
+          type: array
+          items:
+            $ref: '#/components/schemas/Offer'
+          default: []
+        outgoing_invoices:
+          title: Outgoing Invoices
+          type: array
+          items:
+            $ref: '#/components/schemas/OutgoingInvoice'
+          default: []
+        client:
+          $ref: '#/components/schemas/Client'
+        address:
+          $ref: '#/components/schemas/Address'
+        archive:
+          title: Archive
+          type: boolean
+        status:
+          $ref: '#/components/schemas/JobStatusType'
+        type:
+          $ref: '#/components/schemas/JobTypeType'
+        path:
+          title: Path
+          type: string
+    JobCreate:
+      title: JobCreate
+      required:
+        - description
+        - name
+        - client_id
+        - address
+        - type
+        - path
+      type: object
+      properties:
+        description:
+          title: Description
+          type: string
+        name:
+          title: Name
+          type: string
+        client_id:
+          title: Client Id
+          type: integer
+        address:
+          $ref: '#/components/schemas/AddressCreate'
+        type:
+          $ref: '#/components/schemas/JobTypeType'
+        path:
+          title: Path
+          type: string
+    JobStatusType:
+      title: JobStatusType
+      enum:
+        - CREATED
+        - ACCEPTED
+        - FINISHED
+        - OTHER
+      type: string
+      description: An enumeration.
+    JobTypeType:
+      title: JobTypeType
+      enum:
+        - MAIN
+        - SUB
+        - MINI
+      type: string
+      description: An enumeration.
+    JobUpdate:
+      title: JobUpdate
+      required:
+        - description
+        - name
+        - address
+      type: object
+      properties:
+        description:
+          title: Description
+          type: string
+        name:
+          title: Name
+          type: string
+        address:
+          $ref: '#/components/schemas/AddressCreate'
+    Language:
+      title: Language
+      required:
+        - code
+        - id
+        - name
+      type: object
+      properties:
+        code:
+          title: Code
+          type: string
+        id:
+          title: Id
+          type: integer
+        name:
+          $ref: '#/components/schemas/Text'
+    Lock:
+      title: Lock
+      required:
+        - key
+        - id
+        - user
+        - timestamp
+      type: object
+      properties:
+        key:
+          title: Key
+          type: string
+        id:
+          title: Id
+          type: integer
+        user:
+          $ref: '#/components/schemas/User'
+        timestamp:
+          title: Timestamp
+          type: string
+          format: date-time
+    Note:
+      title: Note
+      required:
+        - text
+        - id
+        - user
+      type: object
+      properties:
+        text:
+          title: Text
+          type: string
+        id:
+          title: Id
+          type: integer
+        user:
+          $ref: '#/components/schemas/User'
+    NoteCreate:
+      title: NoteCreate
+      required:
+        - text
+      type: object
+      properties:
+        text:
+          title: Text
+          type: string
+    Offer:
+      title: Offer
+      required:
+        - date
+        - in_price_included
+        - in_price_excluded
+        - payment
+        - delivery
+        - id
+        - lock
+        - timestamp
+        - ordered_articles
+      type: object
+      properties:
+        date:
+          title: Date
+          type: string
+          format: date
+        in_price_included:
+          title: In Price Included
+          type: string
+        in_price_excluded:
+          title: In Price Excluded
+          type: string
+        payment:
+          title: Payment
+          type: string
+        delivery:
+          title: Delivery
+          type: string
+        id:
+          title: Id
+          type: integer
+        lock:
+          $ref: '#/components/schemas/Lock'
+        timestamp:
+          title: Timestamp
+          type: string
+          format: date-time
+        ordered_articles:
+          title: Ordered Articles
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderedArticle'
+        pdf:
+          title: Pdf
+          type: string
+    OfferCreate:
+      title: OfferCreate
+      required:
+        - date
+        - in_price_included
+        - in_price_excluded
+        - payment
+        - delivery
+        - job_id
+        - ordered_articles
+      type: object
+      properties:
+        date:
+          title: Date
+          type: string
+          format: date
+        in_price_included:
+          title: In Price Included
+          type: string
+        in_price_excluded:
+          title: In Price Excluded
+          type: string
+        payment:
+          title: Payment
+          type: string
+        delivery:
+          title: Delivery
+          type: string
+        job_id:
+          title: Job Id
+          type: integer
+        ordered_articles:
+          title: Ordered Articles
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderedArticleCreate'
+    OfferUpdate:
+      title: OfferUpdate
+      required:
+        - date
+        - in_price_included
+        - in_price_excluded
+        - payment
+        - delivery
+        - ordered_articles
+      type: object
+      properties:
+        date:
+          title: Date
+          type: string
+          format: date
+        in_price_included:
+          title: In Price Included
+          type: string
+        in_price_excluded:
+          title: In Price Excluded
+          type: string
+        payment:
+          title: Payment
+          type: string
+        delivery:
+          title: Delivery
+          type: string
+        ordered_articles:
+          title: Ordered Articles
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderedArticleCreate'
+    Order:
+      title: Order
+      required:
+        - description
+        - id
+        - lock
+        - order_from
+        - order_to
+        - create_date
+        - articles
+        - status
+      type: object
+      properties:
+        description:
+          title: Description
+          type: string
+        id:
+          title: Id
+          type: integer
+        lock:
+          $ref: '#/components/schemas/Lock'
+        order_from:
+          $ref: '#/components/schemas/Orderable'
+        order_to:
+          $ref: '#/components/schemas/Orderable'
+        create_date:
+          title: Create Date
+          type: string
+          format: date-time
+        delivery_date:
+          title: Delivery Date
+          type: string
+          format: date-time
+        pdf:
+          title: Pdf
+          type: string
+        articles:
+          title: Articles
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderedArticle'
+        status:
+          $ref: '#/components/schemas/OrderStatusType'
+    OrderCreate:
+      title: OrderCreate
+      required:
+        - description
+        - order_from_id
+        - order_to_id
+      type: object
+      properties:
+        description:
+          title: Description
+          type: string
+        order_from_id:
+          title: Order From Id
+          type: integer
+        order_to_id:
+          title: Order To Id
+          type: integer
+        articles:
+          title: Articles
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderedArticleCreate'
+    OrderStatusType:
+      title: OrderStatusType
+      enum:
+        - CREATED
+        - ORDERED
+        - DELIVERED
+        - OTHER
+      type: string
+      description: An enumeration.
+    OrderUpdate:
+      title: OrderUpdate
+      required:
+        - description
+      type: object
+      properties:
+        description:
+          title: Description
+          type: string
+        articles:
+          title: Articles
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderedArticleCreate'
+    Orderable:
+      title: Orderable
+      required:
+        - type
+        - name
+        - id
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/OrderableType'
+        name:
+          title: Name
+          type: string
+        id:
+          title: Id
+          type: integer
+    OrderableType:
+      title: OrderableType
+      enum:
+        - JOB
+        - STOCK
+        - SUPPLIER
+      type: string
+      description: An enumeration.
+    OrderedArticle:
+      title: OrderedArticle
+      required:
+        - amount
+        - discount
+        - vat
+        - custom_description
+        - alternative
+        - id
+        - ordered_unit
+        - article
+      type: object
+      properties:
+        amount:
+          title: Amount
+          type: number
+        discount:
+          title: Discount
+          type: number
+        vat:
+          title: Vat
+          type: number
+        custom_description:
+          title: Custom Description
+          type: string
+        alternative:
+          title: Alternative
+          type: boolean
+        id:
+          title: Id
+          type: integer
+        ordered_unit:
+          $ref: '#/components/schemas/Unit'
+        article:
+          $ref: '#/components/schemas/Article'
+    OrderedArticleCreate:
+      title: OrderedArticleCreate
+      required:
+        - amount
+        - discount
+        - vat
+        - custom_description
+        - alternative
+        - ordered_unit_id
+        - article_id
+      type: object
+      properties:
+        amount:
+          title: Amount
+          type: number
+        discount:
+          title: Discount
+          type: number
+        vat:
+          title: Vat
+          type: number
+        custom_description:
+          title: Custom Description
+          type: string
+        alternative:
+          title: Alternative
+          type: boolean
+        ordered_unit_id:
+          title: Ordered Unit Id
+          type: integer
+        article_id:
+          title: Article Id
+          type: integer
+    OutgoingInvoice:
+      title: OutgoingInvoice
+      required:
+        - number
+        - date
+        - id
+        - lock
+        - timestamp
+        - pdf
+      type: object
+      properties:
+        number:
+          title: Number
+          type: string
+        date:
+          title: Date
+          type: string
+          format: date
+        id:
+          title: Id
+          type: integer
+        lock:
+          $ref: '#/components/schemas/Lock'
+        timestamp:
+          title: Timestamp
+          type: string
+          format: date-time
+        pdf:
+          title: Pdf
+          type: string
+        payment:
+          $ref: '#/components/schemas/Payment'
+    Payment:
+      title: Payment
+      required:
+        - amount
+        - date
+        - id
+        - timestamp
+      type: object
+      properties:
+        note:
+          title: Note
+          type: string
+        amount:
+          title: Amount
+          type: string
+        date:
+          title: Date
+          type: string
+          format: date
+        id:
+          title: Id
+          type: integer
+        timestamp:
+          title: Timestamp
+          type: string
+          format: date-time
+    Right:
+      title: Right
+      required:
+        - key
+        - description
+        - id
+      type: object
+      properties:
+        key:
+          title: Key
+          type: string
+        description:
+          title: Description
+          type: string
+        id:
+          title: Id
+          type: integer
+    Stock:
+      title: Stock
+      required:
+        - id
+        - lock
+        - orderable
+      type: object
+      properties:
+        id:
+          title: Id
+          type: integer
+        lock:
+          $ref: '#/components/schemas/Lock'
+        orderable:
+          $ref: '#/components/schemas/Orderable'
+    StockCreate:
+      title: StockCreate
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          title: Name
+          type: string
+    Supplier:
+      title: Supplier
+      required:
+        - mail1
+        - mail2
+        - tel1
+        - tel2
+        - id
+        - lock
+        - orderable
+        - address
+        - language
+      type: object
+      properties:
+        mail1:
+          title: Mail1
+          type: string
+        mail2:
+          title: Mail2
+          type: string
+        tel1:
+          title: Tel1
+          type: string
+        tel2:
+          title: Tel2
+          type: string
+        id:
+          title: Id
+          type: integer
+        lock:
+          $ref: '#/components/schemas/Lock'
+        orderable:
+          $ref: '#/components/schemas/Orderable'
+        address:
+          $ref: '#/components/schemas/Address'
+        language:
+          $ref: '#/components/schemas/Language'
+        articles:
+          title: Articles
+          type: array
+          items:
+            $ref: '#/components/schemas/Article'
+          default: []
+    SupplierCreate:
+      title: SupplierCreate
+      required:
+        - mail1
+        - mail2
+        - tel1
+        - tel2
+        - name
+        - address
+        - language_code
+      type: object
+      properties:
+        mail1:
+          title: Mail1
+          type: string
+        mail2:
+          title: Mail2
+          type: string
+        tel1:
+          title: Tel1
+          type: string
+        tel2:
+          title: Tel2
+          type: string
+        name:
+          title: Name
+          type: string
+        address:
+          $ref: '#/components/schemas/AddressCreate'
+        language_code:
+          title: Language Code
+          type: string
+    Text:
+      title: Text
+      required:
+        - translation_de
+        - translation_it
+        - key
+        - id
+      type: object
+      properties:
+        translation_de:
+          title: Translation De
+          type: string
+        translation_it:
+          title: Translation It
+          type: string
+        key:
+          title: Key
+          type: string
+        id:
+          title: Id
+          type: integer
+    Token:
+      title: Token
+      required:
+        - access_token
+        - token_type
+      type: object
+      properties:
+        access_token:
+          title: Access Token
+          type: string
+        token_type:
+          title: Token Type
+          type: string
+    Unit:
+      title: Unit
+      required:
+        - id
+        - lock
+        - short
+        - name
+      type: object
+      properties:
+        id:
+          title: Id
+          type: integer
+        lock:
+          $ref: '#/components/schemas/Lock'
+        short:
+          $ref: '#/components/schemas/Text'
+        name:
+          $ref: '#/components/schemas/Text'
+    UnitCreate:
+      title: UnitCreate
+      required:
+        - short_de
+        - short_it
+        - name_de
+        - name_it
+      type: object
+      properties:
+        short_de:
+          title: Short De
+          type: string
+        short_it:
+          title: Short It
+          type: string
+        name_de:
+          title: Name De
+          type: string
+        name_it:
+          title: Name It
+          type: string
+    User:
+      title: User
+      required:
+        - email
+        - firstname
+        - secondname
+        - id
+      type: object
+      properties:
+        email:
+          title: Email
+          type: string
+        firstname:
+          title: Firstname
+          type: string
+        secondname:
+          title: Secondname
+          type: string
+        id:
+          title: Id
+          type: integer
+        disabled:
+          title: Disabled
+          type: boolean
+        rights:
+          title: Rights
+          type: array
+          items:
+            $ref: '#/components/schemas/Right'
+          default: []
+    UserCreate:
+      title: UserCreate
+      required:
+        - email
+        - firstname
+        - secondname
+        - password
+      type: object
+      properties:
+        email:
+          title: Email
+          type: string
+        firstname:
+          title: Firstname
+          type: string
+        secondname:
+          title: Secondname
+          type: string
+        password:
+          title: Password
+          type: string
+    UserUpdate:
+      title: UserUpdate
+      required:
+        - email
+        - firstname
+        - secondname
+      type: object
+      properties:
+        email:
+          title: Email
+          type: string
+        firstname:
+          title: Firstname
+          type: string
+        secondname:
+          title: Secondname
+          type: string
+    ValidationError:
+      title: ValidationError
+      required:
+        - loc
+        - msg
+        - type
+      type: object
+      properties:
+        loc:
+          title: Location
+          type: array
+          items:
+            type: string
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+    Vat:
+      title: Vat
+      required:
+        - amount
+        - id
+      type: object
+      properties:
+        amount:
+          title: Amount
+          type: number
+        id:
+          title: Id
+          type: integer
+    VatCreate:
+      title: VatCreate
+      required:
+        - amount
+      type: object
+      properties:
+        amount:
+          title: Amount
+          type: number
+  securitySchemes:
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes:
+            'users:me': Read information about the current user
+            'users:all': Read information about all the users
+            'users:create': Create a new user
+            'users:delete': Delete a user
+            'users:modify': Modify another user than yourself
+            'calendar:all': Get all calendar entries
+            'calendar:create': Create a calendar entry
+            'calendar:modify:self': Modify your own calendar entries
+            'calendar:modify:others': Modify other calendar entries
+            'calendar:delete:self': Delete your own calendar entries
+            'calendar:delete:others': Delete other calendar entries
+            'vat:create': Create a new vat entry
+            'vat:modify': Modify a vat entry
+            'vat:delete': Delete a vat entry
+            'unit:create': Create units
+            'unit:modify': Modify a unit
+            'unit:delete': Delete/Disable a unit
+            'supplier:all': Read information about suppliers
+            'supplier:delete': Delete a supplier
+            'supplier:modify': Modify a supplier
+            'supplier:create': Create a supplier
+            'stock:all': Read information about stocks
+            'stock:create': Create a new stock
+            'stock:modify': Modify a stock
+            'stock:delete': Delete a stock
+            'right:grant': Grant rights to user
+            'order:create': Create orders
+            'order:modify': Modify orders
+            'order:all': Get information about all orders
+            'order:delete': Delete an order
+            'offers:create': Create offers
+            'offers:modify': Modify offers
+            'offers:all': Get information about all offers
+            'offers:delete': Delete an offer
+            'jobs:create': Create jobs
+            'jobs:modify': Modify jobs
+            'jobs:all': Get information about all jobs
+            'jobs:delete': Delete an job
+            'parameters:set': Set parameters
+            'parameters:get': Get parameters -> everybody should have this right
+            'ingoing_invoices:create': Create Ingoing Invoices
+            'ingoing_invoices:modify': Modify Ingoing Invoices
+            'ingoing_invoices:all': Get information about all Ingoing Invoices
+            'ingoing_invoices:delete': Delete an Ingoing Invoice
+            'clients:create': Create clients
+            'clients:modify': Modify clients
+            'clients:all': Get information about all clients
+            'clients:delete': Delete an client
+            'categories:create': Create categories
+            'categories:modify': Modify categories
+            'categories:all': Get information about all categories
+            'categories:delete': Delete a category
+            'articles:create': Create articles
+            'articles:modify': Modify articles
+            'articles:all': Get information about all articles
+            'articles:delete': Delete an article
+          tokenUrl: token

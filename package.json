@@ -1,0 +1,14 @@
+{
+  "name": "eisenstecken-openapi-angular-library",
+  "version": "1.0.0",
+  "description": "Library for accessing the eisenstecken api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alexander Klement",
+  "license": "ISC",
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.3.3"
+  }
+}
