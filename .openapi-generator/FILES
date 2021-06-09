@@ -1,9 +1,9 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.module.ts
 api/api.ts
 api/default.service.ts
+api/default.serviceInterface.ts
 configuration.ts
 encoder.ts
 git_push.sh
@@ -63,4 +63,7 @@ model/userUpdate.ts
 model/validationError.ts
 model/vat.ts
 model/vatCreate.ts
+ng-package.json
+package.json
+tsconfig.json
 variables.ts
